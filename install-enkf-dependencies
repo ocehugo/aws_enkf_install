@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+#install the enkf-c stack
+url="https://github.com"
+user="sakov"
+#repos="nn-c.git csa-c.git ncw-c.git gridutils-c.git"
+repos="ncw-c.git gridutils-c.git"
+for u in ${url}; do
+	for id in ${user}; do
+		for name in ${repos};do
+			loc=${u}/${id}/${name}
+			trap "echo ERROR: Install of ${loc} failed;exit 1" ERR
+			./git-installer ${loc}
+		done
+	done
+done

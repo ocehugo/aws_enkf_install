@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+#This will clone/compile and install a C code lying at github
+
+address=$1
+
+if [ -z ${address} ]
+then
+	echo "ERROR: Forgot to point to a github repo"
+	exit 1
+fi
+
+software=$(echo $address | rev | cut -d "/" -f1 | rev)
+sname=$(echo $software | cut -d "." -f1)
+folder=/tmp/$sname
+
+git clone $address $folder
+declare -a have_config
+declare -a have_make
+IFS=$'\n' have_config=($(find $folder -name configure -printf '%p\t%d\n' | sort -n -k2 | cut -f 1))
+IFS=$'\n'; have_make=($(find $folder -name Makefile -printf '%p\t%d\n' | sort -n -k2 | cut -f 1))
+
+if [ -z ${have_config[0]} ]
+then
+   if [ -z ${have_make[0]} ]
+   then
+   	echo "ERROR: No config or make file found"
+	exit 1
+   else
+   	dir=$(dirname ${have_make[0]})
+	cd $dir
+	trap "echo ERROR: Make failed for $sname; exit 1" ERR
+	make all
+	if [ "$sname" != 'enkf-c' ];
+	then
+		make install 
+	fi
+	echo
+	echo "Makefile compilation done for $sname"
+	echo
+   fi
+else
+   dir=$(dirname ${have_config[0]})
+   cd $dir
+   trap "echo ERROR: Configure failed for $sname; exit 1" ERR
+   ./configure --prefix=$HOME/$sname
+   make -j
+   make install
+   echo
+   echo "Configure/Make compilation done for $sname"
+   echo
+fi
