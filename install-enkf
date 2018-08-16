@@ -3,4 +3,5 @@
 #install the enkf-c requirements
 trap "echo Something failed along the away...; exit 1" ERR
 ./install-enkf-dependencies
-LD_PATH="-L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lhdf5_hl -L$HOME/gridutils-c/lib -lgu -L$HOME/ncw-c/lib -lncw" INC_GU="-I$HOME/gridutils-c/include" CPPFLAGS="-I$HOME/ncw-c/include -I$HOME/gridutils-c/include $(nc-config --cflags)" ./git-installer https://github.com/ocehugo/enkf-c.git
+LD_PATH="-L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lhdf5_hl -L$HOME/gridutils-c/lib -lgu -L$HOME/ncw-c/lib -lncw -Wl,-rpath,$HOME/gridutils-c/lib" INC_GU="-I$HOME/gridutils-c/include" CPPFLAGS="-I$HOME/ncw-c/include -I$HOME/gridutils-c/include $(nc-config --cflags)" ./git-installer https://github.com/ocehugo/enkf-c.git
+cp /tmp/enkf-c/enkf/bin/enkf_prep $HOME
