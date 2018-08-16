@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#Setup of the system
+
+binfolder=$HOME/bin
+if ! [ -a $binfolder ]; 
+then
+	mkdir $binfolder
+fi
+
+export PATH=$PATH:$HOME/bin
+
