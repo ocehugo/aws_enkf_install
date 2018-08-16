@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#this is my personal preferences packages
+#Hugo
+
+
+#add neovim
+sudo apt-add-repository ppa:neovim-ppa/unstable
+sudo apt-get update
+sudo apt-get install neovim
